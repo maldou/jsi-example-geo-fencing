@@ -1,4 +1,4 @@
-jsi-examples
+jsi-examples-geo-fencing extends jsi-examples
 ============
 
 Simple examples of how to use the JSI library. The following commands will run the examples:
