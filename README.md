@@ -1,6 +1,6 @@
-jsi-examples-geo-fencing extends jsi-examples
+jsi-examples-geo-fencing
 ============
-
+(jsi-examples-geo-fencing extends jsi-examples)
 Simple examples of how to use the JSI library. The following commands will run the examples:
 
     git clone https://github.com/aled/jsi-examples.git
@@ -12,7 +12,7 @@ Simple examples of how to use the JSI library. The following commands will run t
     java -cp .:./classes net.sf.jsi.examples.NearestN   
     java -cp .:./classes net.sf.jsi.examples.area.Areas
     
-    use：
+    use geo-fencing：
     Areas areas = Areas.getInstance();
 	AreaEntity area1 = new AreaEntity();
 	area1.setCity("天津市"); //城市
