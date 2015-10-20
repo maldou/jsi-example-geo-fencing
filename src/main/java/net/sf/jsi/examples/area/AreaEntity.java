@@ -1,7 +1,5 @@
 package net.sf.jsi.examples.area;
 
-import java.math.BigDecimal;
-
 import net.sf.jsi.Rectangle;
 
 import com.google.common.base.Strings;
@@ -135,8 +133,11 @@ public class AreaEntity {
 			String[] xy = coordArray[i].split(" ");
 			double x1 = Double.valueOf(xy[0]).doubleValue();
 			double y1 = Double.valueOf(xy[1]).doubleValue();
-			Line line = new Line(x1, y1, baseX, baseY);
-			if(line.isIntersect(ray)) {
+			Side side = new Side(x1, y1, baseX, baseY);
+			if(side.isInSide(x, y)) {
+				return true;
+			}
+			if(side.isIntersect(ray)) {
 				intersectCount++;
 			}
 			baseX = x1;
@@ -146,6 +147,10 @@ public class AreaEntity {
 		return intersectCount % 2 == 1;
 	}
 	
+	/**
+	 * 射线
+	 *
+	 */
 	private static class Ray {
 		private double x;
 		private double y;
@@ -155,19 +160,35 @@ public class AreaEntity {
 		}
 	}
 	
-	private static class Line {
+	/**
+	 * 多边形的边
+	 *
+	 */
+	private static class Side {
 		private double k;
 		private double b;
 		
-		public Line(double x1, double y1, double x2, double y2) {
+		private double minX, maxX, minY, maxY; //边界
+		
+		public Side(double x1, double y1, double x2, double y2) {		
 			k = (y1 - y2) / (x1 - x2);
 			b = y1 - k * x1;
+			
+			minX = Math.min(x1, x2);
+			maxX = Math.max(x1, x2);
+			minY = Math.min(y1, y2);
+			maxY = Math.max(y1, y2);
 		}
-		
+		//射线是否与线相交
 		public boolean isIntersect(Ray ray) {
 			double rayY = ray.y;
 			double lineX = (rayY - b) / k;
-			return ray.isIntersect(lineX, rayY);
+			return rayY >= minY && rayY <= maxY && ray.isIntersect(lineX, rayY);
+		}
+		
+		//点是否在线上
+		public boolean isInSide(double x, double y) {
+			return x >= minX && x <= maxX && y >= minY && y <= maxY && y == k * x + b;
 		}
 	}
 }
